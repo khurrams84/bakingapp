@@ -27,17 +27,17 @@ public class BakingRecipesTests {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    /*@Test
+    @Test
     public void clickRecyclerViewItemHasIntentWithAKey() {
         //Checks if the key is present
-        Intents.init();
+        //Intents.init();
 
-        onView(withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        intended(hasExtraWithKey(DetailActivity.RECIPE_KEY));
+        //onView(withId(R.id.rv_recipes)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        //intended(hasExtraWithKey(DetailActivity.RECIPE_KEY));
 
-        Intents.release();
+        //Intents.release();
 
-    }*/
+    }
 
     @Test
     public void clickOnRecyclerViewItem_opensRecipeInfoActivity() {

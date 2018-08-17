@@ -128,6 +128,11 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         View view = inflater.inflate(R.layout.fragment_step_detail, container, false);
         unbinder = ButterKnife.bind(this,view);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey("VideoPosition")) {
+            position = savedInstanceState.getLong("VideoPosition");
+            //mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
+        }
+
         Bundle bundle = this.getArguments();
         step = getArguments().getParcelable("step");
         isTablet = getArguments().getBoolean("isTablet");
@@ -153,6 +158,14 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         unbinder.unbind();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong("VideoPosition", position);
+        //outState.putBoolean(PLAY_WHEN_READY_KEY, mPlayWhenReady);
+    }
+
     private void setData(){
 
     }
@@ -175,7 +188,22 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
 
-            //mExoPlayer.seekTo(position);
+            if(position != 0)
+                mExoPlayer.seekTo(position);
+        }
+    }
+
+    /**
+     * Release ExoPlayer.
+     */
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            //mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+            position = mExoPlayer.getCurrentPosition();
+
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
         }
     }
 
@@ -189,8 +217,11 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     public void onPause() {
         super.onPause();
         //initializeMediaSession();
-        initializePlayer();
+        //initializePlayer();
+        releasePlayer();
     }
+
+
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
