@@ -72,7 +72,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     private String videoUrl;
     private long currentVideoPosition;
     private Unbinder unbinder;
-    private long position;
+    private long mCurrentPosition = 0;
+    private boolean mPlayWhenReady = true;
 
 
     public StepDetailFragment() {
@@ -129,8 +130,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         unbinder = ButterKnife.bind(this,view);
 
         if (savedInstanceState != null && savedInstanceState.containsKey("VideoPosition")) {
-            position = savedInstanceState.getLong("VideoPosition");
-            //mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
+            mCurrentPosition = savedInstanceState.getLong("VideoPosition");
+            mPlayWhenReady = savedInstanceState.getBoolean("PlayWhenReady");
         }
 
         Bundle bundle = this.getArguments();
@@ -162,8 +163,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putLong("VideoPosition", position);
-        //outState.putBoolean(PLAY_WHEN_READY_KEY, mPlayWhenReady);
+        outState.putLong("VideoPosition", mCurrentPosition);
+        outState.putBoolean("PlayWhenReady", mPlayWhenReady);
     }
 
     private void setData(){
@@ -188,8 +189,10 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
 
-            if(position != 0)
-                mExoPlayer.seekTo(position);
+            if(mCurrentPosition != 0)
+                mExoPlayer.seekTo(mCurrentPosition);
+
+            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
         }
     }
 
@@ -198,8 +201,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
      */
     private void releasePlayer() {
         if (mExoPlayer != null) {
-            //mPlayWhenReady = mExoPlayer.getPlayWhenReady();
-            position = mExoPlayer.getCurrentPosition();
+            mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+            mCurrentPosition = mExoPlayer.getCurrentPosition();
 
             mExoPlayer.stop();
             mExoPlayer.release();
