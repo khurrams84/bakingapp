@@ -15,12 +15,13 @@
             android:layout_height="300dp"
             android:layout_gravity="center" />
 
-        <ProgressBar
-            android:id="@+id/pb_buffering"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/recipe_step_detail_imageView"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:visibility="gone"
+            />
 
     </FrameLayout>
 

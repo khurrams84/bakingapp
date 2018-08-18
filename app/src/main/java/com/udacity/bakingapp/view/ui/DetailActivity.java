@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity implements IngredientListFragment.StepFragmentListener {
 
-    public static final String RECIPE_KEY = "recipe_k";
+    public static final String RECIPE_KEY = "SelectedRecipe";
 
     private Recipe mRecipe;
     private boolean mTwoPane;

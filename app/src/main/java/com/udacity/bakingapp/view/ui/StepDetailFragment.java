@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 import com.udacity.bakingapp.R;
 import com.udacity.bakingapp.service.model.Recipe;
 import com.udacity.bakingapp.service.model.Step;
@@ -59,10 +61,12 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     TextView tvStepDescription;
     @BindView(R.id.video_player_view)
     SimpleExoPlayerView videoPlayerView;
-    @BindView(R.id.pb_buffering)
-    ProgressBar pbBuffering;
+    //@BindView(R.id.pb_buffering)
+    //ProgressBar pbBuffering;
     @BindView(R.id.ll_container)
     LinearLayout llContainer;
+    @BindView(R.id.recipe_step_detail_imageView)
+    ImageView mRecipeStepDetailImageView ;
     private Step step;
     private boolean isTablet;
     private SimpleExoPlayer mExoPlayer;
@@ -74,6 +78,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     private Unbinder unbinder;
     private long mCurrentPosition = 0;
     private boolean mPlayWhenReady = true;
+
 
 
     public StepDetailFragment() {
@@ -119,7 +124,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+
     }
 
     @Nullable
@@ -141,9 +146,16 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         tvStepShortDescription.setText(step.getShortDescription());
         tvStepDescription.setText(step.getDescription());
 
+
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             videoPlayerView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             videoPlayerView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+
+        mRecipeStepDetailImageView.setVisibility(View.GONE);
+        if (!step.getThumbnailURL().equals("")) {
+            mRecipeStepDetailImageView.setVisibility(View.VISIBLE);
+
         }
 
         videoUrl = step.getVideoURL();

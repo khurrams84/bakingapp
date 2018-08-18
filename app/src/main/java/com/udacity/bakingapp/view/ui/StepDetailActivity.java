@@ -67,9 +67,7 @@ public class StepDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (fragment.isAdded()) {
-            //getSupportFragmentManager().putFragment(outState, "stepDetailFragment", fragment);
-        }
+
         outState.putInt("currentStepIndex", currentStepIndex);
         super.onSaveInstanceState(outState);
     }
@@ -128,24 +126,21 @@ public class StepDetailActivity extends AppCompatActivity {
             }
         }
 
-        //if (savedInstanceState != null) {
-        //    fragment = (StepDetailFragment) getSupportFragmentManager().getFragment(this.savedInstanceState, "stepDetailFragment");
-        //} else {
-            //fragment = StepDetailFragment.newInstance(steps.get(stepIndex), false);
-        //}
 
-        fragment = new StepDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("step", steps.get(stepIndex));
-        bundle.putBoolean("isTablet", false);
-        fragment.setArguments(bundle);
-
-        //getSupportFragmentManager().beginTransaction()
-        //        .replace(R.id.rl_container, stepDetailFragment)
-        //        .commit();
         FragmentManager manager = getFragmentManager();
+
+        if (savedInstanceState != null) {
+            fragment = (StepDetailFragment) manager.findFragmentByTag(StepDetailFragment.class.getCanonicalName());
+        } else {
+            fragment = new StepDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step", steps.get(stepIndex));
+            bundle.putBoolean("isTablet", false);
+            fragment.setArguments(bundle);
+        }
+
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.rl_container,fragment,"asdf");
+        transaction.replace(R.id.rl_container,fragment, StepDetailFragment.class.getCanonicalName());
         transaction.commit();
     }
 
