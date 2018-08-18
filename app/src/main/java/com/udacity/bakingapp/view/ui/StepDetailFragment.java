@@ -124,7 +124,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -155,7 +155,9 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         mRecipeStepDetailImageView.setVisibility(View.GONE);
         if (!step.getThumbnailURL().equals("")) {
             mRecipeStepDetailImageView.setVisibility(View.VISIBLE);
-
+            Picasso.get()
+                    .load(step.getThumbnailURL())
+                    .into(mRecipeStepDetailImageView);
         }
 
         videoUrl = step.getVideoURL();
@@ -169,6 +171,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        releasePlayer();
     }
 
     @Override
@@ -233,6 +236,7 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
         super.onPause();
         //initializeMediaSession();
         //initializePlayer();
+        mCurrentPosition = mExoPlayer.getCurrentPosition();
         releasePlayer();
     }
 
