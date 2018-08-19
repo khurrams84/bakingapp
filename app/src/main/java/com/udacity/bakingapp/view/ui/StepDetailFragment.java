@@ -54,15 +54,12 @@ import butterknife.Unbinder;
 public class StepDetailFragment extends Fragment implements ExoPlayer.EventListener {
 
 
-    //private static MediaSessionCompat mMediaSession;
     @BindView(R.id.tv_step_short_description)
     TextView tvStepShortDescription;
     @BindView(R.id.tv_step_description)
     TextView tvStepDescription;
     @BindView(R.id.video_player_view)
     SimpleExoPlayerView videoPlayerView;
-    //@BindView(R.id.pb_buffering)
-    //ProgressBar pbBuffering;
     @BindView(R.id.ll_container)
     LinearLayout llContainer;
     @BindView(R.id.recipe_step_detail_imageView)
@@ -70,11 +67,8 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     private Step step;
     private boolean isTablet;
     private SimpleExoPlayer mExoPlayer;
-    //private StepActionListener stepActionListener;
     private TrackSelector trackSelector;
-    //private PlaybackStateCompat.Builder mStateBuilder;
     private String videoUrl;
-    private long currentVideoPosition;
     private Unbinder unbinder;
     private long mCurrentPosition = 0;
     private boolean mPlayWhenReady = true;
@@ -84,16 +78,6 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     public StepDetailFragment() {
         // Required empty public constructor
     }
-
-    /*public static StepDetailFragment newInstance(Step step, boolean isTablet) {
-        StepDetailFragment stepDetailFragment = new StepDetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("step", step);
-        bundle.putBoolean("isTablet", isTablet);
-        stepDetailFragment.setArguments(bundle);
-
-        return stepDetailFragment;
-    }*/
 
     public Step getCurrentStep() {
         return step;
@@ -234,8 +218,6 @@ public class StepDetailFragment extends Fragment implements ExoPlayer.EventListe
     @Override
     public void onPause() {
         super.onPause();
-        //initializeMediaSession();
-        //initializePlayer();
         mCurrentPosition = mExoPlayer.getCurrentPosition();
         releasePlayer();
     }

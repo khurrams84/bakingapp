@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,9 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.It
     private Unbinder unbinder;
     private RecipeListViewModel recipeListViewModel;
 
+    @Nullable private DataDownloaderIdlingResource mDataDownloaderIdlingResource;
+    private RecipeFragmentListener recipeListFragmentListener;
+
     public RecipeListFragment() {
 
     }
@@ -53,6 +57,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.It
 
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
         unbinder = ButterKnife.bind(this, view);
+        setIdlingResourceStatus(false);
 
         setData();
 
@@ -87,6 +92,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.It
             public void onChanged(@Nullable List<Recipe> recipeList) {
                 if (recipeList != null) {
                     recipeListAdapter.setRecipes(recipeList);
+                    setIdlingResourceStatus(true);
+
                 }
             }
         });
@@ -129,4 +136,26 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.It
             }
         }
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        recipeListFragmentListener = (RecipeFragmentListener) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        recipeListFragmentListener = null;
+    }
+
+    public interface RecipeFragmentListener {
+        void onIdlingResourceStatusChanged(boolean isIdle);
+    }
+
+
+    public void setIdlingResourceStatus(boolean isIdle) {
+        recipeListFragmentListener.onIdlingResourceStatusChanged(isIdle);
+    }
+
 }

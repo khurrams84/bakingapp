@@ -20,7 +20,9 @@
         </activity>
         <activity
             android:name=".view.ui.DetailActivity"
-            android:parentActivityName=".view.ui.MainActivity" />
+            android:parentActivityName=".view.ui.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
         <activity android:name=".view.ui.StepDetailActivity" />
 
         <receiver android:name=".view.ui.RecipeWidget">

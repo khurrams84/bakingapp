@@ -52,6 +52,7 @@ public class IngredientListFragment extends Fragment implements StepListAdapter.
     private boolean isTablet;
     private StepFragmentListener fragmentListener;
 
+
     public IngredientListFragment() {
 
     }
@@ -140,4 +141,6 @@ public class IngredientListFragment extends Fragment implements StepListAdapter.
     public interface StepFragmentListener {
         void onStepClicked(Step step);
     }
+
+
 }
